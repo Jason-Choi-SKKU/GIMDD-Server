@@ -9,7 +9,7 @@ const port = new SerialPort('/dev/cu.usbmodem21301', { baudRate: 9600 });
 const parser = port.pipe(new ReadLineParser({ delimiter: '\n' }));
 
 
-const wport = 30001;
+const wport = 3000;
 const app = Express();
 const server = http.createServer(app).listen(wport, () => { console.log("SERVER LISTENING AT ", wport) });
 const webSocketServer = new WebSocketServer({ server : server });
