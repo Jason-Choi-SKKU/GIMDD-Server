@@ -12,6 +12,8 @@
   "dependencies": {
     "@serialport/parser-readline": "^9.2.4",
     "express": "^4.17.1",
+    "kalman-filter": "^1.9.2",
+    "serialport": "^9.2.8",
     "ws": "^8.3.0"
   }
 }
