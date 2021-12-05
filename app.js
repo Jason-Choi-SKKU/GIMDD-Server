@@ -27,7 +27,7 @@ webSocketServer.on('connection', (ws, req) => {
       gyrY: Math.round(krGyroSensor.gyrY.filter(dataSplit[4])),
       gyrZ: Math.round(krGyroSensor.gyrZ.filter(dataSplit[5])),
       ring: isBended(kfBendSensor.ring.filter(dataSplit[6]), 850),
-      middle: isBended(kfBendSensor.middle.filter(dataSplit[7]), 820),
+      middle: isBended(kfBendSensor.middle.filter(dataSplit[7]), 850),
       index: isBended(kfBendSensor.index.filter(dataSplit[8]), 890),
       thumb: isBended(kfBendSensor.bend4.filter(dataSplit[9]), 830),
 
