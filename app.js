@@ -16,50 +16,39 @@ const wport = 30001;
 const app = Express();
 const server = http.createServer(app).listen(wport, () => { console.log("SERVER LISTENING AT ", wport) });
 const webSocketServer = new WebSocketServer({ server : server });
-const mapper = ["ACCX", "ACCY", "ACCZ", "GYRX", "GYRY", "GYRZ"];
-
-app.use("/", (req, res) => {
-  res.send('Hello World!');
-});
+app.use('/', Express.static('public'));
 
 webSocketServer.on('connection', (ws, req) => {
-  
+  parser.on('data', data => {
+    const dataSplit = data.replace("\r", "").split("\t").map((x) => Number(x));
+    const message = {
+      place : 1111111111111111111,
+      gyrX: Math.round(krGyroSensor.gyrX.filter(dataSplit[3])),
+      gyrY: Math.round(krGyroSensor.gyrY.filter(dataSplit[4])),
+      gyrZ: Math.round(krGyroSensor.gyrZ.filter(dataSplit[5])),
+      ring: isBended(kfBendSensor.ring.filter(dataSplit[6]), 850),
+      middle: isBended(kfBendSensor.middle.filter(dataSplit[7]), 820),
+      index: isBended(kfBendSensor.index.filter(dataSplit[8]), 890),
+      thumb: isBended(kfBendSensor.bend4.filter(dataSplit[9]), 830),
+
+    }
+    console.log(message);
+    ws.send(JSON.stringify(message));
+  });
 });
 
-parser.on('data', data => {
-  const dataSplit = data.replace("\r", "").split("\t").map((x) => Number(x));
-  const message = {
-    accX: Number(kfAccSensor.accX.filter(dataSplit[0]).toFixed(1)),
-    accY: Number(kfAccSensor.accY.filter(dataSplit[1]).toFixed(1)),
-    accZ: Number(kfAccSensor.accZ.filter(dataSplit[2]).toFixed(1)),
-    gyrX: Math.round(krGyroSensor.gyrX.filter(dataSplit[3])),
-    gyrY: Math.round(krGyroSensor.gyrY.filter(dataSplit[4])),
-    gyrZ: Math.round(krGyroSensor.gyrZ.filter(dataSplit[5])),
-    bend1: isBended(kfBendSensor.bend1.filter(dataSplit[6])),
-    bend2: isBended(kfBendSensor.bend2.filter(dataSplit[7])),
-    bend3: isBended(kfBendSensor.bend3.filter(dataSplit[8])),
-    bend4: isBended(kfBendSensor.bend4.filter(dataSplit[9])),
 
-  }
-  console.log(message);
-  // ws.send(JSON.stringify(message));
-});
 
-function isBended(value) {
-  return value > 850 ? 1 : 0;
+function isBended(value, criticalValue) {
+  if(criticalValue == 0) return value;
+  return value > criticalValue ? 1 : 0;
 }
 
 const kfBendSensor = {
-  bend1 : new KalmanFilter(),
-  bend2: new KalmanFilter(),
-  bend3: new KalmanFilter(),
+  ring : new KalmanFilter(),
+  middle: new KalmanFilter(),
+  index: new KalmanFilter(),
   bend4: new KalmanFilter(),
-}
-
-const kfAccSensor = {
-  accX: new KalmanFilter(),
-  accY: new KalmanFilter(),
-  accZ: new KalmanFilter(),
 }
 
 const krGyroSensor = {
