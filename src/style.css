@@ -1,0 +1,26 @@
+html, body, main{
+    height: 100%;
+    width : 100%;
+    margin: 0;
+    overflow : hidden;
+    margin : 0;
+    padding : 0;
+    background-color: black;
+    
+}
+
+#viewer {
+    cursor: none;
+    margin : 0;
+    padding : 0;
+    background-color: black;
+}
+
+.cursor {
+    position : absolute;
+    height : 20px;
+    width: 20px;
+    background-color: white;
+    border-radius: 50%;
+    z-index: 100;
+}

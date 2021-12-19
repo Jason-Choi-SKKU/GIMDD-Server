@@ -7,7 +7,7 @@ import KalmanFilter from 'kalmanjs';
 
 
 
-const port = new SerialPort('/dev/cu.usbmodem21301', { baudRate: 9600 }); // choi jason ver
+const port = new SerialPort('/dev/cu.usbmodem1101', { baudRate: 9600 }); // choi jason ver
 // const port = new SerialPort('COM4', { baudRate: 9600 }); // hur minseok ver
 const parser = port.pipe(new ReadLineParser({ delimiter: '\n' }));
 
@@ -27,12 +27,12 @@ webSocketServer.on('connection', (ws, req) => {
       gyrY: Math.round(krGyroSensor.gyrY.filter(dataSplit[4])),
       gyrZ: Math.round(krGyroSensor.gyrZ.filter(dataSplit[5])),
       ring: isBended(kfBendSensor.ring.filter(dataSplit[6]), 850),
-      middle: isBended(kfBendSensor.middle.filter(dataSplit[7]), 850),
-      index: isBended(kfBendSensor.index.filter(dataSplit[8]), 890),
+      middle: isBended(kfBendSensor.middle.filter(dataSplit[7]), 810),
+      index: isBended(kfBendSensor.index.filter(dataSplit[8]), 860),
       thumb: isBended(kfBendSensor.bend4.filter(dataSplit[9]), 830),
 
     }
-    console.log(message);
+    // console.log(message);
     ws.send(JSON.stringify(message));
   });
 });
